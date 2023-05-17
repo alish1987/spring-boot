@@ -8,6 +8,7 @@ import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "posts_tbl")
@@ -26,6 +27,9 @@ public class Posts {
     @JoinColumn(name = "user_fk")
     private Users users;
 
+    @ManyToMany
+    @JoinTable(name = "post_category")
+    private List<Category> categories;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -102,5 +106,13 @@ public class Posts {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

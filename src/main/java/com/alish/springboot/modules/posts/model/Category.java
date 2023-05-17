@@ -2,6 +2,7 @@ package com.alish.springboot.modules.posts.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "category_tbl")
@@ -12,6 +13,9 @@ public class Category {
     private Long id;
 
     private String title;
+
+    @OneToMany(mappedBy = "categories")
+    private List<Posts> posts;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -57,5 +61,13 @@ public class Category {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Posts> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Posts> posts) {
+        this.posts = posts;
     }
 }
