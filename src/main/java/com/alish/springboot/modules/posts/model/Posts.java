@@ -2,9 +2,13 @@ package com.alish.springboot.modules.posts.model;
 
 import com.alish.springboot.modules.users.model.Users;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.apache.catalina.User;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +26,9 @@ public class Posts {
     private String title;
     private String body;
     private String cover;
+    @Transient
+    @JsonIgnore
+    private MultipartFile file;
 
     @ManyToOne
     @JoinColumn(name = "user_fk")
@@ -31,9 +38,11 @@ public class Posts {
     @JoinTable(name = "post_category")
     private List<Category> categories;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at",updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
@@ -114,5 +123,13 @@ public class Posts {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
