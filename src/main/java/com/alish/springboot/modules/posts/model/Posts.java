@@ -3,11 +3,10 @@ package com.alish.springboot.modules.posts.model;
 import com.alish.springboot.modules.users.model.Users;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -23,27 +22,34 @@ public class Posts {
     @GeneratedValue
     private Long id;
 
+    @Nullable
     private String title;
+
+    @Nullable
     private String body;
+
     private String cover;
+
     @Transient
     @JsonIgnore
     private MultipartFile file;
 
     @ManyToOne
     @JoinColumn(name = "user_fk")
+    @JsonIgnore
     private Users users;
 
     @ManyToMany
     @JoinTable(name = "post_category")
+    @Nullable
     private List<Category> categories;
 
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
-    @Column(name = "created_at",updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
 
@@ -93,12 +99,28 @@ public class Posts {
         this.cover = cover;
     }
 
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
     public Users getUsers() {
         return users;
     }
 
     public void setUsers(Users users) {
         this.users = users;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -117,19 +139,4 @@ public class Posts {
         this.updatedAt = updatedAt;
     }
 
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
 }

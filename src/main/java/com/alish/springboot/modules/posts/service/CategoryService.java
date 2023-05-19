@@ -5,9 +5,8 @@ import com.alish.springboot.modules.posts.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
-
-
 @Service
 public class CategoryService {
 
@@ -18,6 +17,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional
     public Category registerCategory(Category category) {
         return this.categoryRepository.save(category);
     }
@@ -26,5 +26,12 @@ public class CategoryService {
         return this.categoryRepository.findAll();
     }
 
+    public Category findById(Long id) {
+        return categoryRepository.getOne(id);
+    }
 
+    @Transactional
+    public void deleteById(Long id) {
+        categoryRepository.deleteById(id);
+    }
 }
